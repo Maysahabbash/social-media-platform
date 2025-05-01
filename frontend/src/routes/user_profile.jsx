@@ -1,6 +1,23 @@
 import { Flex, Text, VStack, Box, Heading, HStack, Image, Button} from "@chakra-ui/react"; //chakra-ui DocS
+import { useEffect, useState } from "react";
 
 const UserProfile = () => {
+
+   const get_username_from_url = () => {
+      const url_split = window.location.pathname.split('/');
+      return url_split[url_split.length-1]
+
+   }
+     
+    const [username, setUsername] = useState(get_username_from_url())
+    useEffect ( () => {
+      setUsername(get_username_from_url())
+
+    
+
+ }, [] ) 
+
+
   return (
     <Flex w='100' justifyContent={'center'}>
          <VStack w='75%'>
@@ -24,7 +41,7 @@ const UserDetails = () => {
         <VStack gap = '20px'>
          <HStack gap='20px'> 
          <VStack>
-            <Text>Follwing</Text>
+            <Text>Following</Text>
             <Text>0</Text>
           </VStack>
           <VStack >
