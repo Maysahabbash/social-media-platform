@@ -1,5 +1,9 @@
 import axios from 'axios'
-const BASE_URL = 'http://127.0.0.1:8000/api/'
+import { SERVER_URL } from '../constants/constant'
+
+
+
+const BASE_URL = SERVER_URL
 const api = axios.create({
     baseURL:BASE_URL,
     withCredentials:true
