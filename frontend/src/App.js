@@ -10,9 +10,6 @@ function App() {
        <Router>
          <Routes>
          <Route element={<Layout><UserProfile/></Layout>} path='/:username' />
-            
-
-
            </Routes>
         </Router>
      </ChakraProvider>
