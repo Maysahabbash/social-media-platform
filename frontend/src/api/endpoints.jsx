@@ -27,15 +27,14 @@ api.interceptors.response.use(
             window.location.herf = '/login'
             return Promise.reject(refreshError)
         }
-        
 
 
     }
-    return Promise.reject(refreshError)
 
+    return Promise.reject(error)
+}
 
-
-   }
+   
    
    
 )
@@ -54,9 +53,6 @@ export const refresh_token = async () => {
 }
 
 export const login = async (username, password) => {
-    const response = await api.post('/token/',{username, password});
+    const response = await api.post('/token/', {username, password});
     return response.data
-
-
-    
 }
