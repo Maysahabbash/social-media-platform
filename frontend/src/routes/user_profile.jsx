@@ -1,6 +1,6 @@
 import { Flex, Text, VStack, Box, Heading, HStack, Image, Button, Spacer} from "@chakra-ui/react"; //chakra-ui DocS
 import { useEffect, useState } from "react";
-import { get_user_profile_data } from "../api/endpoints";
+import { get_user_profile_data, toggleFollow } from "../api/endpoints";
 import { SERVER_URL } from "../constants/constant";
 const UserProfile = () => {
   const get_username_from_url = () => {
@@ -34,34 +34,38 @@ const UserDetails = ({username}) => {
 
   const [isOurProfile, setIsOurProfile] = useState(false)
   const [following, setFollowing] = useState(false)
- 
-  useEffect(() =>{
+  
+  const handleToggleFollow = async () => {
+    const data = await toggleFollow(username);
+    if (data.now_following) {
+        setFollowerCount(followerCount+1)
+        setFollowing(true)
+    } else {
+        setFollowerCount(followerCount-1)
+        setFollowing(false)
+    }
+}
+useEffect(() => {
 
   const fetchData = async () => {
-    
+      try {
+          const data = await get_user_profile_data(username);
+          setBio(data.bio)
+          SetProfileImage(data.profile_image)
+          setFollowerCount(data.follower_count)
+          setFollowingCount(data.following_count)
 
-    try{
-      const data = await get_user_profile_data(username); // Fixed variable name
-      setBio(data.bio)
-      SetProfileImage(data.profile_image)
-      setFollowerCount(data.follower_count)
-      setFollowingCount(data.following_count)
-      setIsOurProfile(data.is_our_profile)
-      setFollowing(data.following)
-
-    } catch {
-
-      console.log('error')
-      
-    } finally {
-      setLoading(false)
-    }
-    
+          setIsOurProfile(data.is_our_profile)
+          setFollowing(data.following)
+      } catch {
+          console.log('error')
+      } finally {
+          setLoading(false)
+      }
   }
- 
   fetchData()
-}, [username]) // Add username to dependency array
-
+  
+}, [username])
 
 
   return(
@@ -75,37 +79,33 @@ const UserDetails = ({username}) => {
         <VStack gap ='20px'>
          <HStack gap='20px' fontSize={'18px'}> 
            <VStack>
-             <Text>Follower</Text>
-             <Text>{ loading ? '-' : followerCount}0</Text>
-           </VStack>
-            <VStack >
-              <Text>Following</Text>
-              <Text>{ loading ? '-' : followingCount}</Text> 
-            </VStack>
-         </HStack>
-         {
+           <Text>Followers</Text>
+                            <Text>{ loading ? '' : followerCount}</Text>
+                        </VStack>
+                        <VStack>
+                            <Text>Following</Text>
+                            <Text>{ loading ? '' : followingCount}</Text>
+                        </VStack>
+                    </HStack>
+                    {
+                        loading ?
+                            <Spacer />
+                            :
 
-          loading?
-          <Spacer/>
-
-          :
-
-          isOurProfile ?
-          <Button w= '100%'>Edit Profile </Button>
-          :
-          <Button colorScheme="pink" w= '100%'>{following ? 'unFollow': 'Follow' }</Button>
-
-
-
-
-         }
+                            isOurProfile ?
+                                <Button w='100%'>Edit Profile</Button>
+                                :
+                                <Button onClick={handleToggleFollow} colorScheme="pink" w='100%'>{following ? 'Unfollow' : 'Follow'}</Button>
+                    }
+                
+                </VStack>
+            </HStack>
+            <Text fontSize='18px'>{ loading ? '-' : bio}</Text>
         </VStack>
-      </HStack>
-      <Text fontSize={'18px'}>{ loading? '-': bio}</Text>
-     </VStack>
+    )
 
   
-  )
+  
 }
 
 export default UserProfile;

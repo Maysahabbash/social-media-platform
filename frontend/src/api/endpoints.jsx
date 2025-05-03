@@ -25,6 +25,7 @@ api.interceptors.response.use(
 
         } catch (refreshError){
             window.location.href = '/login'
+
             return Promise.reject(refreshError)
         }
 
@@ -62,5 +63,9 @@ export const register = async (username, email,firstName, lastName, password) =>
 }
 export const get_auth = async () => {
     const response = await api.get('/authenticated/');  // Should resolve to http://127.0.0.1:8000/api/authenticated/
+    return response.data
+}
+export const toggleFollow = async (username) => {
+    const response = await api.post('/toggle_follow/', {username:username});
     return response.data
 }
