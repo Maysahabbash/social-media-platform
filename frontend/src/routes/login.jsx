@@ -1,8 +1,7 @@
-import { Flex, VStack, FormControl, Input, Button, FormLabel, Heading,} from "@chakra-ui/react";
-import { login } from "../api/endpoints";
+import { Flex, VStack, FormControl, Input, Button, FormLabel, Heading, Text} from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../contexts/useAuth";
 
 
 const Login = () => {
@@ -10,16 +9,17 @@ const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
+    const {auth_login} = useAuth();
 
-    const handleLogin = async () => {
-      const data = await login(username, password)
-      if(data.success){
-         navigate(`/${username}`)
-      }else{
-        alert('invalid')
-      }
+    const handleLogin = () => {
+      auth_login(username, password)
+ 
       
     }
+    const handleNav = () => {
+      navigate('/register')
+  }
+
 
 
 
@@ -59,6 +59,8 @@ const Login = () => {
           </FormControl>
   
           <Button onClick={handleLogin} bgColor='pink' w='100%'>Login</Button>
+          <Text onClick={handleNav} fontSize='14px' color='gray.500'>Don't have an account? Sign up</Text>
+
         </VStack>
       </Flex>
   

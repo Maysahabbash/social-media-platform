@@ -1,5 +1,5 @@
-import { Flex, VStack, FormControl, Input, Button, FormLabel, Heading,} from "@chakra-ui/react";
-import { login } from "../api/endpoints";
+import { Flex, VStack, FormControl, Input, Button, FormLabel, Heading, Text} from "@chakra-ui/react";
+import { register } from "../api/endpoints";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -18,14 +18,30 @@ const Register = () => {
     const navigate = useNavigate();
 
     const handleRegister = async () => {
-      const data = await login(username, password)
-      if(data.success){
-         navigate(`/${username}`)
-      }else{
-        alert('invalid')
-      }
+
+        if (password === confirmPassword){
+            try{
+              await register(username, email, first_name, last_name, password);
+              alert('successful registration')
+              navigate('/login')
+
+
+            }catch{
+                alert('error registering')
+            }
+
+        } else{
+            alert ('password and confirm password are not the same')
+        }
+
+
+  
       
     }
+    const handleNav = () => {
+        navigate('/login')
+    }
+
 
 
 
@@ -55,7 +71,7 @@ const Register = () => {
             </FormLabel>
             <Input 
               id='email' 
-              autoComplete='username'  // Added attribute
+              autoComplete='email'  // Added attribute
 
               bg='white' 
               type='text' 
@@ -68,7 +84,7 @@ const Register = () => {
             </FormLabel>
             <Input 
               id='first_name' 
-              autoComplete='username'  // Added attribute
+              autoComplete='first_name'  // Added attribute
 
               bg='white' 
               type='text' 
@@ -81,7 +97,7 @@ const Register = () => {
             </FormLabel>
             <Input 
               id='last_name' 
-              autoComplete='username'  // Added attribute
+              autoComplete='last_name'  // Added attribute
 
               bg='white' 
               type='text' 
@@ -107,7 +123,7 @@ const Register = () => {
              Confirm Password
             </FormLabel>
             <Input 
-              id='password' 
+              id='confirm_password' 
               autoComplete='current-password'  // Added attribute
 
               bg='white' 
@@ -115,11 +131,14 @@ const Register = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </FormControl>
+        <Button onClick={handleRegister} bgColor='pink' w='100%'>Register</Button>
+        <VStack w='100%' alignItems='start' gap='10px'>
+                    <Text onClick={handleNav} fontSize='14px' color='gray.500'>Already have an account? Log in</Text>
+                </VStack>
 
-  
-          <Button onClick={handleRegister} bgColor='pink' w='100%'>Register</Button>
         </VStack>
       </Flex>
+      
   
 
 

@@ -5,18 +5,18 @@ import UserProfile from './routes/user_profile';
 import Layout from './components/layout';
 import Login from './routes/login';
 import Register from './routes/register';
-
+import { Authprovider } from './contexts/useAuth';
 function App() {
   return (
     <ChakraProvider>
        <Router>
-         <Routes>
-         <Route element={<Layout><UserProfile/></Layout>} path='/:username'/>
-         <Route element={<Layout><Login/></Layout>} path='/Login'/>
-         <Route element={<Layout><Register/></Layout>} path='/register'/>
-
-
+        <Authprovider>
+        <Routes>
+            <Route element={<Layout><UserProfile/></Layout>} path='/:username'/>
+            <Route element={<Layout><Login/></Layout>} path='/Login'/>
+            <Route element={<Layout><Register/></Layout>} path='/register'/>
            </Routes>
+        </Authprovider>
         </Router>
      </ChakraProvider>
       
