@@ -1,9 +1,10 @@
 import { Flex, Text, VStack, Box, Heading, HStack, Image, Button, Spacer} from "@chakra-ui/react"; //chakra-ui DocS
 import { useEffect, useState } from "react";
-import { get_user_profile_data, toggleFollow } from "../api/endpoints";
+import { get_user_profile_data, toggleFollow, get_users_posts} from "../api/endpoints";
 import { SERVER_URL } from "../constants/constant";
+import Post from "../components/post";
 const UserProfile = () => {
-  const get_username_from_url = () => {
+    const get_username_from_url = () => {
     const url_split = window.location.pathname.split('/');
     return url_split[url_split.length-1];
   }
@@ -15,15 +16,19 @@ const UserProfile = () => {
   }, []); // Consider adding location dependency if URL changes matter
 
   return (
-    <Flex w='100%' justifyContent={'center'}>
-      <VStack w='75%'>
-        <Box w='100%' mt='40px'>
-          <UserDetails username={username}/>
-        </Box>
-      </VStack>
+    <Flex w='100%' justifyContent='center'>
+        <VStack w='75%'>
+            <Box w='100%' mt='40px'>
+                <UserDetails username={username} />
+            </Box>
+            <Box w='100%' mt='50px'>
+                <UserPosts username={username} />
+            </Box>
+        </VStack>
     </Flex>
-  );
+)
 }
+
 const UserDetails = ({username}) => {
 
   const[loading, setLoading] = useState(true) //spins until data is loaded from the backend
@@ -107,5 +112,42 @@ useEffect(() => {
   
   
 }
+
+const UserPosts = ({username}) => {
+
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+
+      const fetchPosts = async () => {
+          try {
+              const posts = await get_users_posts(username)
+              setPosts(posts)
+          } catch {
+              alert('error getting users posts')
+          } finally {
+              setLoading(false)
+          }
+      }
+      fetchPosts()
+
+  }, [])
+
+  return (
+      <Flex w='100%' wrap='wrap' gap='30px' pb='50px'>
+          {loading ?
+              <Text>Loading...</Text>
+          :
+              posts.map((post) => {
+                  return <Post key={post.id} id={post.id} username={post.username} description={post.description} formatted_date={post.formatted_date} liked={post.liked} like_count={post.like_count} />
+              })
+          }
+      </Flex>
+  )
+}
+
+
+
 
 export default UserProfile;

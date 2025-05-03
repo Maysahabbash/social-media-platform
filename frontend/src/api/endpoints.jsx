@@ -69,3 +69,11 @@ export const toggleFollow = async (username) => {
     const response = await api.post('/toggle_follow/', {username:username});
     return response.data
 }
+export const get_users_posts = async (username) => {
+    const response = await api.get(`/posts/${username}/`);  // Should resolve to http://127.0.0.1:8000/api/authenticated/
+    return response.data
+}
+export const toggleLike = async (id) => {
+    const response = await api.post('/toggleLike/', {id:id})
+    return response.data
+}
