@@ -13,7 +13,7 @@ function App() {
       <Router>
         <AuthProvider>
          <Routes>
-            <Route element={<Layout><PrivateRoute><UserProfile/></PrivateRoute></Layout>} path='/:username' />
+            <Route element={<Layout><UserProfile/></Layout>} path='/:username' />
             <Route element={<Layout><Login/></Layout>} path='/Login'/>
             <Route element={<Layout><Register/></Layout>} path='/register'/>
            </Routes>

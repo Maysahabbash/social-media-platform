@@ -1,4 +1,4 @@
-import { Flex, Text, VStack, Box, Heading, HStack, Image, Button} from "@chakra-ui/react"; //chakra-ui DocS
+import { Flex, Text, VStack, Box, Heading, HStack, Image, Button, Spacer} from "@chakra-ui/react"; //chakra-ui DocS
 import { useEffect, useState } from "react";
 import { get_user_profile_data } from "../api/endpoints";
 import { SERVER_URL } from "../constants/constant";
@@ -32,7 +32,8 @@ const UserDetails = ({username}) => {
   const [followerCount, setFollowerCount] = useState (0)
   const [followingCount, setFollowingCount] = useState (0)
 
-  
+  const [isOurProfile, setIsOurProfile] = useState(false)
+  const [following, setFollowing] = useState(false)
  
   useEffect(() =>{
 
@@ -45,7 +46,8 @@ const UserDetails = ({username}) => {
       SetProfileImage(data.profile_image)
       setFollowerCount(data.follower_count)
       setFollowingCount(data.following_count)
-      console.log(SERVER_URL, data.profile_image)
+      setIsOurProfile(data.is_our_profile)
+      setFollowing(data.following)
 
     } catch {
 
@@ -74,14 +76,29 @@ const UserDetails = ({username}) => {
          <HStack gap='20px' fontSize={'18px'}> 
            <VStack>
              <Text>Follower</Text>
-             <Text>{ loading ? '-' : followerCount}</Text>
+             <Text>{ loading ? '-' : followerCount}0</Text>
            </VStack>
             <VStack >
               <Text>Following</Text>
               <Text>{ loading ? '-' : followingCount}</Text> 
             </VStack>
          </HStack>
-         <Button w= '100%'>Edit Profile </Button>
+         {
+
+          loading?
+          <Spacer/>
+
+          :
+
+          isOurProfile ?
+          <Button w= '100%'>Edit Profile </Button>
+          :
+          <Button colorScheme="pink" w= '100%'>{following ? 'unFollow': 'Follow' }</Button>
+
+
+
+
+         }
         </VStack>
       </HStack>
       <Text fontSize={'18px'}>{ loading? '-': bio}</Text>
