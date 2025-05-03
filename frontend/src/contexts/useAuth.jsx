@@ -1,48 +1,44 @@
-import { createContext, useContext, useState, useEffect, Children, use } from "react";
-import {get_auth, login} from '../api/endpoints';
+import { createContext, useContext, useState, useEffect } from "react";
+import { get_auth, login } from '../api/endpoints';
 import { useNavigate } from "react-router-dom";
+
 const AuthContext = createContext();
 
-export const Authprovider = ({children}) => {
-    const [auth, setAuth] = useState(false)
-    const [ authLoading, setAuthLoading] = useState(true)
+export const AuthProvider = ({ children }) => {
+    const [auth, setAuth] = useState(false);
+    const [authLoading, setAuthLoading] = useState(true);
     const navigate = useNavigate();
 
     const check_auth = async () => {
-        try{
+        try {
             await get_auth();
-            setAuth(true)
-
-        }catch {
-            setAuth(false)
-        }finally{
-            setAuthLoading(false)
+            setAuth(true);
+        } catch {
+            setAuth(false);
+        } finally {
+            setAuthLoading(false);
         }
-    }
+    };
 
     const auth_login = async (username, password) => {
-              const data = await login(username, password)
-              if(data.success){
-                setAuth(true)
+        const data = await login(username, password);
+        if (data.success) {
+            setAuth(true);
+            navigate(`/${username}`);
+        } else {
+            alert('invalid');
+        }
+    };
 
-                 navigate(`/${username}`)
-              }else{
-                alert('invalid')
-              }
-        
-    }
+    useEffect(() => {
+        check_auth();
+    }, []);
 
-    useEffect(() =>  {
-
-        check_auth()
-
-    }, [window.location.pathname])
-
-    return(
-        <AuthContext.Provider value={{auth, authLoading, auth_login}}>
+    return (
+        <AuthContext.Provider value={{ auth, authLoading, auth_login }}>
             {children}
         </AuthContext.Provider>
-    )
-}
+    );
+};
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

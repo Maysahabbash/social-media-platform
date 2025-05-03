@@ -14,7 +14,7 @@ const Navbar = () => {
     return(
         <Flex w='100vw' h='90px' bg='#4B0082' justifyContent='center' alignItems='center'>
             <HStack w='90%' justifyContent='space-between'color={'white'}>
-                <Text fontSize='24px' fontWeight='bold' fontFamily='fantasy'>Social404</Text>
+                <Text color={'pink'} fontSize='24px' fontWeight='bold' fontFamily='fantasy'>Moments</Text>
                 <HStack>
                     <Text 
                         onClick={() => handleNavigate('maysa')}  _hover={{ cursor: 'pointer' }} > <IoPersonCircleOutline size={'30px'}/>

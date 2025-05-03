@@ -24,7 +24,7 @@ api.interceptors.response.use(
             return api(original_request);
 
         } catch (refreshError){
-            window.location.herf = '/login'
+            window.location.href = '/login'
             return Promise.reject(refreshError)
         }
 
@@ -61,7 +61,6 @@ export const register = async (username, email,firstName, lastName, password) =>
     return response.data
 }
 export const get_auth = async () => {
-    const response = await api.get(`/athenticated/`);
+    const response = await api.get('/authenticated/');  // Should resolve to http://127.0.0.1:8000/api/authenticated/
     return response.data
-
 }

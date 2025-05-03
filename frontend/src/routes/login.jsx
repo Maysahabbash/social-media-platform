@@ -1,24 +1,22 @@
-import { Flex, VStack, FormControl, Input, Button, FormLabel, Heading, Text} from "@chakra-ui/react";
+import { VStack, Flex, FormControl, Input, Button, FormLabel, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/useAuth";
-
 
 const Login = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
-    const {auth_login} = useAuth();
+    const { auth_login } = useAuth();
 
     const handleLogin = () => {
-      auth_login(username, password)
- 
-      
+        auth_login(username, password)
     }
+
     const handleNav = () => {
-      navigate('/register')
-  }
+        navigate('/register')
+    }
 
 
 

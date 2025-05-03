@@ -5,20 +5,21 @@ import UserProfile from './routes/user_profile';
 import Layout from './components/layout';
 import Login from './routes/login';
 import Register from './routes/register';
-import { Authprovider } from './contexts/useAuth';
+import { AuthProvider } from './contexts/useAuth';
+import PrivateRoute from './components/private_route';
 function App() {
   return (
     <ChakraProvider>
-       <Router>
-        <Authprovider>
-        <Routes>
-            <Route element={<Layout><UserProfile/></Layout>} path='/:username'/>
+      <Router>
+        <AuthProvider>
+         <Routes>
+            <Route element={<Layout><PrivateRoute><UserProfile/></PrivateRoute></Layout>} path='/:username' />
             <Route element={<Layout><Login/></Layout>} path='/Login'/>
             <Route element={<Layout><Register/></Layout>} path='/register'/>
            </Routes>
-        </Authprovider>
-        </Router>
-     </ChakraProvider>
+         </AuthProvider>
+       </Router>
+    </ChakraProvider>
       
       
    

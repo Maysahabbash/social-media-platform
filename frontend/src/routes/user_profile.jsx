@@ -37,6 +37,7 @@ const UserDetails = ({username}) => {
   useEffect(() =>{
 
   const fetchData = async () => {
+    
 
     try{
       const data = await get_user_profile_data(username); // Fixed variable name
@@ -44,7 +45,7 @@ const UserDetails = ({username}) => {
       SetProfileImage(data.profile_image)
       setFollowerCount(data.follower_count)
       setFollowingCount(data.following_count)
-      console.log(SERVER_URL, data.profileImage)
+      console.log(SERVER_URL, data.profile_image)
 
     } catch {
 
@@ -56,9 +57,9 @@ const UserDetails = ({username}) => {
     
   }
  
-   fetchData()    
+  fetchData()
+}, [username]) // Add username to dependency array
 
-  }, [])
 
 
   return(
@@ -67,7 +68,7 @@ const UserDetails = ({username}) => {
       <Heading>@{username}</Heading>
       <HStack gap='20px'> 
         <Box boxSize='150px' border={'1px solid'}borderRadius={'full'} borderColor={'gray.700'} bg='white' overflow={'hidden'}>
-        <Image src= {loading? '': `${SERVER_URL}${profileImage}`}  boxSize={"100%"} objectFit={"cover"}/>
+        <Image src= {loading? null: `${SERVER_URL}${profileImage}`}  boxSize={"100%"} objectFit={"cover"}/>
         </Box>
         <VStack gap ='20px'>
          <HStack gap='20px' fontSize={'18px'}> 
