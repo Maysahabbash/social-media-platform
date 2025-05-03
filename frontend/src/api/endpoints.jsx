@@ -77,3 +77,4 @@ export const toggleLike = async (id) => {
     const response = await api.post('/toggleLike/', {id:id})
     return response.data
 }
+
