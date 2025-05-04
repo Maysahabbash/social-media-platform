@@ -1,4 +1,3 @@
-
 import { useAuth } from "../contexts/useAuth";
 import { Navigate } from "react-router-dom";
 import { Text } from "@chakra-ui/react";
@@ -14,7 +13,7 @@ const PrivateRoute = ({children}) => {
     if (auth) {
         return children
     } else {
-        return <Navigate to='/login'/>
+        return <Navigate to='/login' />
     }
 
 }
