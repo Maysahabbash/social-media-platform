@@ -1,6 +1,6 @@
 import { Heading, VStack, Text, Flex, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { get_posts } from "../api/endpoints";
+import { get_posts, get_users_posts } from "../api/endpoints";
 import Post from "../components/post";
 
 const Home = () => {
@@ -30,6 +30,9 @@ const Home = () => {
             fetchData()
         }
     }
+    
+
+    
 
     return (
         <Flex w='100%' justifyContent='center' pt='50px'>
@@ -61,5 +64,7 @@ const Home = () => {
         </Flex>
     )
 }
+
+
 
 export default Home;

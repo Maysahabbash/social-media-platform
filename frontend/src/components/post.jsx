@@ -1,4 +1,4 @@
-import { VStack, Text, HStack, Flex, Box , Spinner} from "@chakra-ui/react";
+import { VStack, Text, HStack, Flex, Box } from "@chakra-ui/react";
 
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
@@ -9,25 +9,22 @@ import { useState } from "react";
 
 const Post = ({id, username, description, formatted_date, liked, like_count}) => {
 
-const [clientLiked, setClientLiked] = useState(like_count);
-const [clientLikeCount, setClientLikeCount] = useState(like_count);
-const [isLikeLoading, setIsLikeLoading] = useState(false);
+    const [clientLiked, setClientLiked] = useState(liked)
+    const [clientLikeCount, setClientLikeCount] = useState(like_count)
+    const [posts, setPosts] = useState([]);
 
-const handleToggleLike = async () => {
-    try {
-        setIsLikeLoading(true);
-        const { data } = await toggleLike(id);
-        
-        setClientLiked(data.now_liked);
-        setClientLikeCount(data.new_like_count);
-    } catch (error) {
-        console.error("Like toggle failed:", error);
-        setClientLiked(prev => !prev);
-        setClientLikeCount(prev => clientLiked ? prev - 1 : prev + 1);
-    } finally {
-        setIsLikeLoading(false);
+
+    const handleToggleLike = async () => {
+        const data = await toggleLike(id);
+        if (data.now_liked) {
+            setClientLiked(true)
+            setClientLikeCount(clientLikeCount+1)
+        } else {
+            setClientLiked(false)
+            setClientLikeCount(clientLikeCount-1)
+        }
     }
-};
+    
  
     return (
         <VStack w='400px' h='400px' border='1px solid' borderColor='gray.400' borderRadius='8px'>
@@ -39,30 +36,22 @@ const handleToggleLike = async () => {
             </Flex>
             <Flex flex='2' w='100%' justifyContent='center' alignItems='center' borderTop='1px solid' bg='gray.50' borderColor='gray.400' borderRadius='0 0 8px 8px'>
                 <HStack w='90%' justifyContent='space-between'>
-                <HStack>
-    <Box>
-        {isLikeLoading ? (
-            <Spinner size="sm" /> // Loading indicator
-        ) : clientLiked ? (
-            <Box 
-                color='red' 
-                cursor={isLikeLoading ? 'not-allowed' : 'pointer'}
-                onClick={!isLikeLoading ? handleToggleLike : undefined}
-            >
-                <FaHeart />
-            </Box>
-        ) : (
-            <Box 
-                cursor={isLikeLoading ? 'not-allowed' : 'pointer'}
-                onClick={!isLikeLoading ? handleToggleLike : undefined}
-            >
-                <FaRegHeart />
-            </Box>
-        )}
-    </Box>
-    <Text>{isLikeLoading ? '...' : clientLikeCount}</Text>
-</HStack>
-<Text>{formatted_date}</Text>                </HStack>
+                    <HStack >
+                        <Box>
+                            {
+                                clientLiked ? 
+                                    <Box color='red'>
+                                        <FaHeart onClick={handleToggleLike} />
+
+                                    </Box>
+                                :
+                                    <FaRegHeart onClick={handleToggleLike} />
+                            }
+                        </Box>
+                        <Text>{clientLikeCount}</Text>
+                    </HStack>
+                    <Text>{formatted_date}</Text>
+                </HStack>
             </Flex>
         </VStack>
     )
